@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Registration Form</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="badge">Student Portal</div>
+      <h1>Registration Form</h1>
+      <p class="subtitle">Fill in your details to get registered.</p>
+    </div>
+
+    <form id="regForm" novalidate>
+      <div class="field">
+        <label for="name">Full Name <span class="required">*</span></label>
+        <input type="text" id="name" placeholder="e.g. Aleshiea Das" autocomplete="name"/>
+        <div class="error-msg" id="nameError">Please enter your full name.</div>
+      </div>
+
+      <div class="field">
+        <label for="email">Email Address <span class="required">*</span></label>
+        <input type="email" id="email" placeholder="e.g. aleshiea@example.com" autocomplete="email"/>
+        <div class="error-msg" id="emailError">Please enter a valid email address.</div>
+      </div>
+
+      <div class="field">
+        <label for="scholar">Scholar Number <span class="required">*</span></label>
+        <input type="text" id="scholar" placeholder="e.g. 2024CQ001" autocomplete="off"/>
+        <div class="error-msg" id="scholarError">Scholar number must be 5–20 characters.</div>
+      </div>
+
+      <button type="submit" id="submitBtn">
+        <span id="btnText">Register Now</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
+
+      <div class="toast" id="toast">
+        <span id="toastMsg"></span>
+      </div>
+    </form>
+
+    <hr class="divider">
+    <p class="footer">Your data is stored securely in Google Sheets.</p>
+  </div>
+
+  <script>
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzCgesu5Vu1rEVSRTGuVWV8a3Wvgho6pvAPB79fQSy7DwrgnKWwzFucf8LB-SgEc1V/exec";
+
+    const form      = document.getElementById("regForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const btnText   = document.getElementById("btnText");
+    const spinner   = document.getElementById("spinner");
+    const toast     = document.getElementById("toast");
+    const toastMsg  = document.getElementById("toastMsg");
+
+    function validateName(val)    { return val.trim().length >= 2; }
+    function validateEmail(val)   { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim()); }
+    function validateScholar(val) { const t = val.trim(); return t.length >= 5 && t.length <= 20; }
+
+    function setFieldState(inputId, errorId, isValid) {
+      document.getElementById(inputId).classList.toggle("invalid", !isValid);
+      document.getElementById(errorId).classList.toggle("show", !isValid);
+      return isValid;
+    }
+
+    document.getElementById("name").addEventListener("blur", () =>
+      setFieldState("name", "nameError", validateName(document.getElementById("name").value)));
+    document.getElementById("email").addEventListener("blur", () =>
+      setFieldState("email", "emailError", validateEmail(document.getElementById("email").value)));
+    document.getElementById("scholar").addEventListener("blur", () =>
+      setFieldState("scholar", "scholarError", validateScholar(document.getElementById("scholar").value)));
+
+    function showToast(type, message) {
+      toast.className         = "toast";
+      toast.classList.add(type === "success" ? "success" : "error-toast");
+      toastMsg.textContent    = message;
+      toast.style.display     = "block";
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name    = document.getElementById("name").value;
+      const email   = document.getElementById("email").value;
+      const scholar = document.getElementById("scholar").value;
+
+      const ok =
+        setFieldState("name",   "nameError",   validateName(name))   &
+        setFieldState("email",  "emailError",  validateEmail(email))  &
+        setFieldState("scholar","scholarError",validateScholar(scholar));
+
+      if (!ok) return;
+
+      toast.style.display   = "none";
+      btnText.style.display = "none";
+      spinner.style.display = "block";
+      submitBtn.disabled    = true;
+
+      try {
+        const res  = await fetch(APPS_SCRIPT_URL, {
+          method:  "POST",
+          headers: { "Content-Type": "text/plain" },
+          body:    JSON.stringify({
+            name:          name.trim(),
+            email:         email.trim(),
+            scholarNumber: scholar.trim()
+          })
+        });
+        const data = await res.json();
+
+        if (data.result === "success") {
+          showToast("success", "Registered successfully!");
+          form.reset();
+        } else {
+          showToast("error", "Server error: " + (data.message || "Try again."));
+        }
+
+      } catch (err) {
+        showToast("error", "Submission failed. Check your internet and try again.");
+        console.error("Fetch error:", err);
+      } finally {
+        btnText.style.display = "block";
+        spinner.style.display = "none";
+        submitBtn.disabled    = false;
+      }
+    });
+  </script>
+</body>
+</html>
