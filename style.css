@@ -1,14 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lavishly+Yours&family=Orbitron:wght@400..900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
-
-
-   *{
+*{
     padding:0;
     margin:0;
     box-sizing:border-box;
 }
-
-    :root {
+ :root {
       --bg:#f4f1ec;
       --card:#ffffff;
       --sagegreen: #4a7c59;
@@ -21,8 +18,7 @@
       --success: #2f9e44;
       --radius: 12px;
     }
-
-    body {
+ body {
       font-family: 'Rajdhani';
       background: var(--bg);
       min-height: 100vh;
@@ -32,7 +28,7 @@
       padding: 24px;
     }
 
-    .card {
+  .card {
       background: var(--card);
       border-radius: 20px;
       box-shadow: 1px 1px 30px rgba(46, 123, 34, 0.2);
@@ -40,13 +36,11 @@
       width: 100%;
       max-width: 460px;
     }
-
-    .header {
+  .header {
       text-align: center;
       margin-bottom: 36px;
     }
-
-    .badge {
+  .badge {
       display: inline-block;
       background: var(--sagegreen-light);
       color: var(--sagegreen);
@@ -58,38 +52,32 @@
       border-radius: 100px;
       margin-bottom: 14px;
     }
-
-    h1 {
+   h1 {
       font-size: 26px;
       font-weight: 700;
       color: var(--text);
       line-height: 1.25;
     }
-
-    .subtitle {
+   .subtitle {
       font-size: 14px;
       color: var(--muted);
       margin-top: 6px;
     }
-
-    .field {
+   .field {
       margin-bottom: 20px;
     }
-
-    label {
+   label {
       display: block;
       font-size: 16px;
       font-weight: 500;
       color: var(--text);
       margin-bottom: 7px;
     }
-
-    .required { 
+  .required { 
         color: var(--error); 
         margin-left: 2px;
     }
-
-    input {
+  input {
       width: 100%;
       padding: 12px 14px;
       border: 1.5px solid var(--border);
@@ -101,34 +89,28 @@
       transition: border-color 0.18s, box-shadow 0.18s;
       outline: none;
     }
-
-    input::placeholder { 
+  input::placeholder { 
         font-family:'Rajdhani';
         color: #adb5bd; }
-
-    input:focus {
+  input:focus {
       border-color: var(--sagegreen);
       box-shadow: 0 0 0 3px rgba(59, 219, 112, 0.10);
       background: #fff;
     }
-
-    input.invalid {
+ input.invalid {
       border-color: var(--error);
       box-shadow: 0 0 0 3px rgba(224, 49, 49, 0.10);
     }
-
-    .error-msg {
+ .error-msg {
       font-size: 12px;
       color: var(--error);
       margin-top: 5px;
       display: none;
     }
-
-    .error-msg.show {
+ .error-msg.show {
          display: block;
     }
-
-    button[type="submit"] {
+ button[type="submit"] {
       width: 100%;
       padding: 14px;
       background: var(--sagegreen);
@@ -143,12 +125,10 @@
       transition: background 0.18s, transform 0.12s;
       position: relative;
     }
-
     button[type="submit"]:hover { background: var(--sagegreen-dark); }
     button[type="submit"]:active { transform: scale(0.98); }
     button[type="submit"]:disabled { opacity: 0.65; cursor: not-allowed; }
-
-    .spinner {
+  .spinner {
       display: none;
       width: 18px; height: 18px;
       border: 2.5px solid rgba(255,255,255,0.4);
@@ -157,10 +137,8 @@
       animation: spin 0.7s linear infinite;
       margin: 0 auto;
     }
-
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    .toast {
+.toast {
   display: none;
   margin-top: 18px;
   padding: 13px 16px;
@@ -169,27 +147,23 @@
   font-weight: 500;
   text-align:center;
 }
-
 .toast.success {
   display: block;
   background: #ebfbee;
   color: var(--success);
   border: 1.5px solid #b2f2bb;
 }
-
 .toast.error-toast {
   display: block;
   background: #fff5f5;
   color: var(--error);
   border: 1.5px solid #ffc9c9;
 }
-
-    .divider {
+.divider {
       border-top: 1.5px solid var(--border);
       margin: 28px 0 20px 0px;
     }
-
-    .footer{
+.footer{
       text-align: center;
       font-size: 12px;
       color: var(--muted);
